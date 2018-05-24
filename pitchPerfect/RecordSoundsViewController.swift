@@ -19,16 +19,9 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
-    
     stopRecordingButton.isEnabled = false
   }
-  
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-
+ 
   @IBAction func recordAudio(_ sender: Any) {
     recordingLabel.text = "Recording in Progress"
     recordingLabel.textColor = UIColor.red
@@ -39,7 +32,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     let recordingName = "recordedVoice.wav"
     let pathArray = [dirPath, recordingName]
     let filePath = URL(string: pathArray.joined(separator: "/"))
-    print(filePath)
+    print(filePath!)
     
     
     let session = AVAudioSession.sharedInstance()
