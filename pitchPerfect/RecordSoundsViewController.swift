@@ -12,7 +12,7 @@ import AVFoundation
 class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
   
   var audioRecorder: AVAudioRecorder!
-
+  
   @IBOutlet var recordingLabel: UILabel!
   @IBOutlet var recordButton: UIButton!
   @IBOutlet var stopRecordingButton: UIButton!
@@ -21,18 +21,17 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     super.viewDidLoad()
     stopRecordingButton.isEnabled = false
   }
- 
+  
   @IBAction func recordAudio(_ sender: Any) {
-    recordingLabel.text = "Recording in Progress"
-    recordingLabel.textColor = UIColor.red
-    recordButton.isEnabled = false
-    stopRecordingButton.isEnabled = true
+    configureUI(isRecording: true)
     
     let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0] as String
     let recordingName = "recordedVoice.wav"
     let pathArray = [dirPath, recordingName]
     let filePath = URL(string: pathArray.joined(separator: "/"))
     print(filePath!)
+    
+    
     
     
     let session = AVAudioSession.sharedInstance()
@@ -46,10 +45,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
   }
   
   @IBAction func stopRecording(_ sender: Any) {
-    recordingLabel.text = "Tap to Record"
-    recordingLabel.textColor = UIColor.black
-    recordButton.isEnabled = true
-    stopRecordingButton.isEnabled = false
+    configureUI(isRecording: false)
     audioRecorder.stop()
     let audioSession = AVAudioSession.sharedInstance()
     try! audioSession.setActive(false)
@@ -69,6 +65,13 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
       let recordedAudioURL = sender as! URL
       playSoundsVC.recordedAudioURL = recordedAudioURL
     }
+  }
+  
+  func configureUI(isRecording: Bool) {
+    recordingLabel.text = isRecording ? "Recording in Progress" : "Tap to Record"
+    recordingLabel.textColor = isRecording ? UIColor.red : UIColor.black
+    recordButton.isEnabled = isRecording ? false : true
+    stopRecordingButton.isEnabled = isRecording ? true : false
   }
 }
 
